@@ -16,22 +16,34 @@ document.addEventListener("DOMContentLoaded",()=>{
   const showPwBtn=document.getElementById("showPw");
   const showPw2Btn=document.getElementById("showPw2");
 
-  themeBtn?.addEventListener("click",()=>{
-    const isDark=document.documentElement.getAttribute("data-theme")==="dark";
-    const next=isDark?"light":"dark";
-    document.documentElement.setAttribute("data-theme",next);
-    try{localStorage.setItem("theme",next);}catch(_){}
-    themeBtn.setAttribute("aria-pressed",String(next==="dark"));
-  });
+  if(themeBtn){
+    // Initialize theme if not set
+    if(!document.documentElement.getAttribute("data-theme")){
+      document.documentElement.setAttribute("data-theme","light");
+    }
+    // Set initial aria-pressed state
+    const initialTheme=document.documentElement.getAttribute("data-theme");
+    themeBtn.setAttribute("aria-pressed",String(initialTheme==="dark"));
+
+    themeBtn.addEventListener("click",()=>{
+      const current=document.documentElement.getAttribute("data-theme");
+      const isDark=current==="dark";
+      const next=isDark?"light":"dark";
+      document.documentElement.setAttribute("data-theme",next);
+      try{localStorage.setItem("theme",next);}catch(_){}
+      themeBtn.setAttribute("aria-pressed",String(next==="dark"));
+    });
+  }
 
   function toggleVis(input,btn){
     const isText=input.type==="text";
     input.type=isText?"password":"text";
     btn.setAttribute("aria-pressed",String(!isText));
-    btn.querySelector(".label")?.textContent=isText?"Show":"Hide";
+    const labelEl=btn.querySelector(".label");
+    if(labelEl){labelEl.textContent=isText?"Show":"Hide";}
   }
-  showPwBtn?.addEventListener("click",()=>toggleVis(password,showPwBtn));
-  showPw2Btn?.addEventListener("click",()=>toggleVis(confirmPassword,showPw2Btn));
+  if(showPwBtn){showPwBtn.addEventListener("click",()=>toggleVis(password,showPwBtn));}
+  if(showPw2Btn){showPw2Btn.addEventListener("click",()=>toggleVis(confirmPassword,showPw2Btn));}
 
   function setFieldError(field,message){
     const msgEl=document.getElementById(field.id+"Error");
@@ -70,7 +82,8 @@ document.addEventListener("DOMContentLoaded",()=>{
   form.addEventListener("submit",(e)=>{
     e.preventDefault();
     if(!validateForm()) return;
-    const plan=document.querySelector('input[name="plan"]:checked')?.value ?? "Basic";
+    const planEl=document.querySelector('input[name="plan"]:checked');
+    const plan=planEl ? planEl.value : "Basic";
     document.getElementById("confName").textContent=(document.getElementById("fullName").value||"").trim();
     document.getElementById("confEmail").textContent=(document.getElementById("email").value||"").trim();
     document.getElementById("confPlan").textContent=plan;
@@ -78,7 +91,8 @@ document.addEventListener("DOMContentLoaded",()=>{
     document.getElementById("confHeading").focus();
   });
 
-  document.getElementById("editInfo")?.addEventListener("click",()=>{
+  const editInfoBtn=document.getElementById("editInfo");
+  if(editInfoBtn){editInfoBtn.addEventListener("click",()=>{
     confirmView.hidden=true; formView.hidden=false; document.getElementById("fullName").focus();
-  });
+  });}
 });
