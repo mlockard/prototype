@@ -1,1 +1,90 @@
-<!-- (content omitted here for brevity in notebook — full HTML was generated earlier) -->
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Higher Ed — Registration & Subscription Prototype</title>
+<meta name="description" content="Prototype: Accessible registration form with tiered subscriptions (Basic, Standard, Premium). Plain HTML/CSS/JS.">
+<link rel="icon" href="./assets/icons/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="./styles.css"/>
+<script>try{const s=localStorage.getItem('theme');if(s==='light'||s==='dark'){document.documentElement.setAttribute('data-theme',s);}}catch(_){}</script>
+</head><body>
+<a class="skip-link" href="#main">Skip to main content</a>
+<header class="site-header"><div class="container header-inner">
+  <a class="brand" href="#"><span class="brand-logo" aria-hidden="true"></span><span class="brand-title">Campus Access</span></a>
+  <button id="themeToggle" class="theme-toggle" type="button" aria-pressed="false" aria-label="Toggle dark mode"><span aria-hidden="true">🌓</span> <span class="label">Theme</span></button>
+</div></header>
+<main id="main" class="container">
+  <section class="main-hero" aria-labelledby="heroHeading">
+    <h1 id="heroHeading" class="hero-heading">Register & choose your access level</h1>
+    <p class="hero-sub">Interactive prototype to preview a tiered subscription flow for a Higher Education experience — accessible, mobile-ready, and easy to hand off to design.</p>
+  </section>
+  <section id="formView" class="card" aria-labelledby="formTitle">
+    <div class="card-header"><h2 id="formTitle" class="card-title">Create your account</h2><p class="card-subtitle">All fields are required.</p></div>
+    <div class="card-body">
+      <form id="regForm" novalidate>
+        <div class="form-grid two-col">
+          <div class="form-field">
+            <label for="fullName">Full name</label>
+            <input class="input" id="fullName" name="fullName" type="text" autocomplete="name" required aria-describedby="fullNameHelp fullNameError"/>
+            <div id="fullNameHelp" class="help">Use your preferred name.</div>
+            <div id="fullNameError" class="error-text" role="alert" hidden></div>
+          </div>
+          <div class="form-field">
+            <label for="email">Email address</label>
+            <input class="input" id="email" name="email" type="email" inputmode="email" autocomplete="email" required aria-describedby="emailHelp emailError"/>
+            <div id="emailHelp" class="help">We’ll send a confirmation.</div>
+            <div id="emailError" class="error-text" role="alert" hidden></div>
+          </div>
+          <div class="form-field">
+            <label for="password">Password</label>
+            <div class="inline-input">
+              <input class="input" id="password" name="password" type="password" minlength="8" required aria-describedby="passwordHelp passwordError"/>
+              <button id="showPw" type="button" class="btn secondary" aria-pressed="false"><span class="label">Show</span></button>
+            </div>
+            <div id="passwordHelp" class="help">At least 8 characters.</div>
+            <div id="passwordError" class="error-text" role="alert" hidden></div>
+          </div>
+          <div class="form-field">
+            <label for="confirmPassword">Confirm password</label>
+            <div class="inline-input">
+              <input class="input" id="confirmPassword" name="confirmPassword" type="password" minlength="8" required aria-describedby="confirmPasswordError"/>
+              <button id="showPw2" type="button" class="btn secondary" aria-pressed="false"><span class="label">Show</span></button>
+            </div>
+            <div id="confirmPasswordError" class="error-text" role="alert" hidden></div>
+          </div>
+        </div>
+        <fieldset class="form-field" style="margin-top: var(--space-4)">
+          <legend id="planLegend" style="font-weight:700;font-size:var(--fz-600);" tabindex="-1">Choose a subscription plan</legend>
+          <p class="help" id="planHelp">Select a single plan to proceed.</p>
+          <div class="plan-grid" role="radiogroup" aria-labelledby="planLegend" aria-describedby="planHelp">
+            <label class="plan" for="plan-basic"><input id="plan-basic" name="plan" type="radio" value="Basic"/><div class="plan-title">Basic</div><p class="plan-desc">Free tier with limited access.</p></label>
+            <label class="plan" for="plan-standard"><input id="plan-standard" name="plan" type="radio" value="Standard"/><div class="plan-title">Standard</div><p class="plan-desc">Access to more academic features.</p></label>
+            <label class="plan" for="plan-premium"><input id="plan-premium" name="plan" type="radio" value="Premium"/><div class="plan-title">Premium</div><p class="plan-desc">Full access to all available features.</p></label>
+          </div>
+          <div id="planError" class="error-text" role="alert" hidden>Please select a plan.</div>
+        </fieldset>
+        <div style="margin-top:var(--space-6);display:flex;gap:var(--space-3);flex-wrap:wrap;">
+          <button type="submit" class="btn">Create account</button>
+          <button type="reset" class="btn ghost">Reset</button>
+        </div>
+      </form>
+    </div>
+  </section>
+  <section id="confirmation" class="card" hidden aria-labelledby="confHeading">
+    <div class="card-header"><h2 id="confHeading" class="card-title" tabindex="-1">You're all set ✅</h2><p class="card-subtitle">This is a simulated confirmation screen for the prototype.</p></div>
+    <div class="card-body">
+      <div class="alert success" role="status" aria-live="polite">
+        <p><strong>Thanks, <span id="confName">Student</span>!</strong> You selected the <strong><span id="confPlan">Basic</span></strong> plan.</p>
+        <p>We’ll send a confirmation email to <strong><span id="confEmail">you@example.edu</span></strong>.</p>
+      </div>
+      <div style="margin-top:var(--space-6);display:flex;gap:var(--space-3);flex-wrap:wrap;">
+        <button id="editInfo" type="button" class="btn secondary">Edit info</button>
+      </div>
+    </div>
+  </section>
+</main>
+<footer class="site-footer"><div class="container">
+  <p><strong>Prototype only:</strong> No data is stored. Built with semantic HTML, accessible components, and a color palette inspired by leading educational platforms.</p>
+  <p>© <span id="year"></span> Campus Access • MIT License</p>
+</div></footer>
+<script>const y=new Date().getFullYear();const yearEl=document.getElementById('year');if(yearEl)yearEl.textContent=y;</script>
+<script src="./script.js" defer></script>
+</body></html>
